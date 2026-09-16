@@ -94,6 +94,10 @@ jobs:
 
   publish:
     name: Publish nightly to PyPI
+    # Canonical repo only: a fork has no PYPI_API_TOKEN, so publishing always
+    # fails there (uv publish with an empty token), and --check-url against
+    # files upstream already published mismatches hashes on top of that.
+    if: github.repository == 'crewAIInc/crewAI' || github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     environment:
